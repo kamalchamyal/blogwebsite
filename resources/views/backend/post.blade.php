@@ -3,7 +3,7 @@
 @section('content')
 
 
-<div class="col-md-12 ">
+<div class="col-11 mx-auto card py-3 ">
     <div class="row mb-4">
         <div class="col-md-6 ">
             <h4>Post</h4>
@@ -44,13 +44,11 @@
         </div>
     </form>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered table-responsive">
         <tr>
             <th>id</th>
             <th>category name</th>
             <th>title</th>
-            {{-- <th>slug</th> --}}
-            {{-- <th>descreption</th> --}}
             <th>Image</th>
             <th>banner</th>
             <th width="280px">Action</th>
@@ -60,17 +58,18 @@
             <td>{{ ++$i }}</td>
             <td>{{ $p->c_name }}</td>
             <td >{{ $p->post_title }}</td>
-            {{-- <td>{{ $p->slug }}</td> --}}
-            {{-- <td class=" text-truncate "style="max-width: 150px;">
-                <?php
+
+                {{-- @php
+
+
 
                 $str="{$p->post_Description}";
                 echo "$str" ;
-                ?>
-            </td> --}}
-            <td><a href="{{asset('image/'. $p->post_img)}}" target="_blank"><img src="{{asset('image/'. $p->post_img)}}" alt="post img" width="100px" height="100px"></a>
+                @endphp --}}
+
+            <td><a href="{{asset('image/'. $p->post_img)}}" target="_blank"><img src="{{asset('image/'. $p->post_img)}}" alt="post img" width="50px" height="50px"></a>
             </td>
-            <td><a href="{{asset('banner/'. $p->banner_img)}}" target="_blank"><img src="{{asset('banner/'. $p->banner_img)}}" alt="No banner img" width="100px" height="100px"></a>
+            <td><a href="{{asset('banner/'. $p->banner_img)}}" target="_blank"><img src="{{asset('banner/'. $p->banner_img)}}" alt="No banner img" width="50px" height="50px"></a>
 
                        </td>
             <td>
@@ -91,7 +90,8 @@
         </tr>
         @endforeach
     </table>
-</div>
     {!! $post->links() !!}
+</div>
+
 
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,7 +26,8 @@ class HomeController extends Controller
     public function index()
     {
         $category = Category::count();
-        return view('home',['category'=>$category]);
+        $post=Post::count();
+        return view('home',['category'=>$category,'post'=>$post]);
     }
 
 }
