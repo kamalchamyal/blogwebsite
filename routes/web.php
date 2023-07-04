@@ -71,13 +71,6 @@ Route::get('/', [App\Http\Controllers\FrontendController::class, 'show'])->name(
 Route::get('{category}/{slug}',[ FrontendController::class, 'singleview'])->name('singleview');
 Route::get('{c_slug}',[ FrontendController::class, 'postdetail'])->name('postdetail');
 Route::resource('form', formcontroller::class);
-
-
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-
-
-// Route::get('/comments', [CommentController::class, 'showComments']);
-
-
 Route::get('/status-update/{id}', [App\Http\Controllers\formcontroller::class, 'status_update'])->name('destroy');
 

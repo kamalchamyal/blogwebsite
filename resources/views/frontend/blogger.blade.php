@@ -145,7 +145,6 @@
 
                                             <p>{{ substr(strip_tags($relatedPost->post_Description), 0, 50) . '...' }}</p>
 
-
                                     </div>
                                     <!--media-body-->
                                 </div>
@@ -262,75 +261,34 @@
                     <div class="sidebar_title">
                         <h2>Most Commented</h2>
                     </div>
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#"><img class="media-object" src="assets/img/img-list.jpg"
-                                    alt="Generic placeholder image"></a>
-                        </div>
-                        <!--media-left-->
-                        <div class="media-body">
-                            <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                            <div class="comment_box">
-                                <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                <div class="comments"><a href="#">9 Comments</a></div>
+                    @if ($mostCommentedPost)
+                    @foreach ($mostCommentedPost as $mostCommentedPost )
+
+
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="#"><img class="media-object" src="{{ 'image/' . $mostCommentedPost->post_img }}"
+                                        alt="Generic placeholder image" height="80px " width="80px"></a>
                             </div>
-                            <!--comment_box-->
-                        </div>
-                        <!--media-body-->
-                    </div>
-                    <!--media-->
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#"><img class="media-object" src="assets/img/img-list2.jpg"
-                                    alt="Generic placeholder image"></a>
-                        </div>
-                        <!--media-left-->
-                        <div class="media-body">
-                            <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                            <div class="comment_box">
-                                <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                <div class="comments"><a href="#">20 Comments</a></div>
+                            <!--media-left-->
+                            <div class="media-body">
+                                <h3 class="media-heading"><a href="{{URL::to($mostCommentedPost->c_name.'/'.$mostCommentedPost->slug)}}">{{ $mostCommentedPost->post_title }}</a></h3>
+                                <div class="comment_box">
+                                    <div class="comments_icon">
+                                        <i class="fa fa-comments" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="comments"><a href="{{URL::to($mostCommentedPost->c_name.'/'.$mostCommentedPost->slug)}}">{{ $mostCommentedPost->comment_count }} Comments</a></div>
+                                </div>
+                                <!--comment_box-->
                             </div>
-                            <!--comment_box-->
+                            <!--media-body-->
                         </div>
-                        <!--media-body-->
-                    </div>
-                    <!--media-->
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#"><img class="media-object" src="assets/img/img-list3.jpg"
-                                    alt="Generic placeholder image"></a>
-                        </div>
-                        <!--media-left-->
-                        <div class="media-body">
-                            <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                            <div class="comment_box">
-                                <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                <div class="comments"><a href="#">23 Comments</a></div>
-                            </div>
-                            <!--comment_box-->
-                        </div>
-                        <!--media-body-->
-                    </div>
-                    <!--media-->
-                    <div class="media">
-                        <div class="media-left">
-                            <a href="#"><img class="media-object" src="assets/img/img-list3.jpg"
-                                    alt="Generic placeholder image"></a>
-                        </div>
-                        <!--media-left-->
-                        <div class="media-body">
-                            <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                            <div class="comment_box">
-                                <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                <div class="comments"><a href="#">44 Comments</a></div>
-                            </div>
-                            <!--comment_box-->
-                        </div>
-                        <!--media-body-->
-                    </div>
-                    <!--media-->
+                        @endforeach
+                    @else
+                        <p>No posts found.</p>
+                    @endif
                 </div>
+
                 <!--most_comment-->
             </div>
 

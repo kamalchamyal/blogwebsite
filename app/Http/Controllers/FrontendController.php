@@ -20,20 +20,16 @@ class FrontendController extends Controller
        if(!$category){
         abort(404);
     }
+    $mostCommentedPost = Post::leftJoin('comments', 'posts.id', '=', 'comments.post_id')
+    ->leftJoin('categories', 'categories.id', '=', 'posts.c_id')
+    ->whereNull('comments.parent_id')
+    ->select('categories.id', 'categories.c_name', 'categories.c_status', 'posts.id', 'posts.post_title','posts.slug', 'posts.post_img', DB::raw('COUNT(comments.id) as comment_count'))
+    ->groupBy('categories.id', 'categories.c_name', 'categories.c_status','posts.slug', 'posts.id', 'posts.post_title', 'posts.post_img')
+    ->where("c_status",1) ->orderBy('comment_count', 'desc')
+    ->orderBy('posts.created_at', 'desc')
+    ->take(5)
+    ->get();
 
-
-
-
-    //     $post =    post::select
-    //     (
-    //       "posts.id", "posts.c_id","categories.c_name as c_name","posts.post_title",
-    //      "posts.post_Description","posts.post_img","posts.banner_img","posts.slug","users.name as user_name","posts.created_at"
-    //     )
-    //     // ->where("status", 1)
-    //     ->leftJoin("categories", "categories.id", "=", "posts.c_id")
-    //     ->leftJoin("users", "users.id", "=", "posts.added_by")->orderBy('id', 'DESC')
-
-    //   ->get();
 
     $latestPosts = DB::table('categories')
         ->leftJoin('posts', 'categories.id', '=', 'posts.c_id')
@@ -53,7 +49,7 @@ class FrontendController extends Controller
     $currentDateTime = date('d F. l Y. g:i A', $currentTimestamp);
 
 
-    return view('frontend.blogger', ['currentDateTime' => $currentDateTime ,'latestPosts' => $latestPosts , 'category' => $category]);
+    return view('frontend.blogger', ['mostCommentedPost'=>$mostCommentedPost ,'currentDateTime' => $currentDateTime ,'latestPosts' => $latestPosts , 'category' => $category]);
 
     }
 
@@ -72,7 +68,15 @@ class FrontendController extends Controller
         }
         $category = Category::where("c_status",1)->orderBy('id', 'DESC')->get();
         $commentData = Session::get('commentData');
-
+        $mostCommentedPost = Post::leftJoin('comments', 'posts.id', '=', 'comments.post_id')
+        ->leftJoin('categories', 'categories.id', '=', 'posts.c_id')
+        ->whereNull('comments.parent_id')
+        ->select('categories.id', 'categories.c_name', 'categories.c_status', 'posts.id', 'posts.post_title','posts.slug', 'posts.post_img', DB::raw('COUNT(comments.id) as comment_count'))
+        ->groupBy('categories.id', 'categories.c_name', 'categories.c_status','posts.slug', 'posts.id', 'posts.post_title', 'posts.post_img')
+        ->where("c_status",1) ->orderBy('comment_count', 'desc')
+        ->orderBy('posts.created_at', 'desc')
+        ->take(5)
+        ->get();
 
         $comments = Comment::where('post_id', $post->id)
         ->where('Comment_status', 1)
@@ -93,15 +97,9 @@ class FrontendController extends Controller
                 Session::put('refreshCount', $refreshCount);
             }
         }
-
-
-
-
-
-
         $currentTimestamp = time();
         $currentDateTime = date('d F. l Y. g:i A', $currentTimestamp);
-        return view('frontend.singleview',['commentData' => $commentData,'comments'=>$comments, 'currentDateTime'=>$currentDateTime,   'category'=> $category, 'post'=>$post]);
+        return view('frontend.singleview',['mostCommentedPost'=>$mostCommentedPost ,'commentData' => $commentData,'comments'=>$comments, 'currentDateTime'=>$currentDateTime,   'category'=> $category, 'post'=>$post]);
     }
 
     public function postdetail($c_slug)
