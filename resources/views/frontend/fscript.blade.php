@@ -12,4 +12,4 @@
 <script src="{{url('frontend/assets/js/script.js')}}"></script>
 
 <!-- Off Canvas Menu -->
-<script src="{{url('frontend/assets/js/offcanvas.min.js')}}"></script>
+{{-- <script src="{{url('frontend/assets/js/offcanvas.min.js')}}"></script> --}}

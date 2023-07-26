@@ -4,7 +4,7 @@
  <section id="feature_news_section" class="feature_news_section section_wrapper">
 	<div class="container">
 	    <div class="row">
-	    	<div class="col-md-12">
+	    	<div class="col-md-6">
 	    		<div class="feature_news_carousel">
 					<div id="featured-news-carousal" class="carousel slide" data-ride="carousel">
 					    <!-- Wrapper for slides -->
@@ -13,11 +13,11 @@
                             $posts = App\Models\Post::where("c_status",1)->leftJoin("users", "users.id", "=", "posts.added_by")->leftJoin("categories", "posts.c_id", "=", "categories.id")->get(); // Fetch the posts from the database, assuming you have a 'posts' table and 'Post' model
                         @endphp
                         @foreach ($posts as $key=> $banner)
-                        @if($banner->banner_img)
+                        @if($banner->post_img)
                             <div class="item{{ $key === 0 ? ' active' : '' }} feature_news_item">
 								<div class="item_wrapper">
 									<div class="item_img">
-										<img class="" style="width: 100%;height:431px; display:block" src="{{url('banner/'.$banner->banner_img)}}"  alt="Chania" >
+										<img class="img-responsive" style="width: 100%;height:360px; display:block" src="{{url('image/'.$banner->post_img)}}"  alt="Chania" >
 									</div> <!--item_img-->
 									<div class="item_title_date">
 										<div class="news_item_title">
@@ -33,7 +33,7 @@
 										<div class="item_meta"><a href="#"> {{$formattedDate}} ,</a> by:<a href="#">{{$banner->name}}</a></div>
 									</div> <!--item_title_date-->
 								</div>	<!--item_wrapper-->
-							    <div class="item_content">
+							    <div class="item_content " >
                                       <?php
                                     $str = "{$banner->post_Description}";
                                         $limitedText = Str::limit($str, 100);
@@ -58,7 +58,61 @@
 	    		</div><!--feature_news_carousel-->
 	    	</div><!--col-md-6-->
 
+            <div class="col-md-6">
+	    		<div class="feature_news_static">
+		    		<div class="row">
+                        @php
+                        $posts = App\Models\Post::where("c_status", 1)
+->leftJoin("users", "users.id", "=", "posts.added_by")
+->leftJoin("categories", "posts.c_id", "=", "categories.id")
+->inRandomOrder()  // Add this line to randomize the order
+->limit(2)         // Add this line to limit the results to 2 posts
+->get();
 
+                    @endphp
+                        @foreach ($posts as $post)
+						<div class="col-md-6">
+
+
+
+
+							<div class="feature_news_item">
+
+	                			<div class="item active">
+									<div class="item_wrapper">
+										<div class="item_img">
+											<img class="img-res" style="width: 100%;height:360px; display:block" src="{{url('image/'.$post->post_img)}}" alt="Chania">
+										</div> <!--item_img-->
+										<div class="item_title_date">
+											<div class="news_item_title">
+												<h2><a href="{{URL::to($post->c_name.'/'.$post->slug)}}">    {{ \Illuminate\Support\Str::words($post->post_title, 5, '...') }}
+                                                </a></h2>
+											</div>
+                                            <?php
+                                            $dateString = $post->created_at;
+                                            $formattedDate = date('dM-Y', strtotime($dateString));
+                                         ?>
+                                            <div class="item_meta"><a href="#">{{$formattedDate}}</a> by:<a href="#">{{$post->name}}</a></div>
+										</div><!--item_title_date-->
+									</div> <!--item_wrapper-->
+								    <div class="item_content">
+                                        <?php
+                                        $str = "{$post->post_Description}";
+                                            $limitedText = Str::limit($str, 50);
+                                              echo $limitedText;
+                                        ?>
+								    </div>
+
+								</div><!--item-->
+
+	            			</div><!--feature_news_item-->
+
+						</div>
+                        @endforeach
+
+					</div><!--row-->
+	    		</div><!--feature_news_static-->
+	    	</div><!--col-md-6-->
 	    </div><!--row-->
 	</div><!--container-->
 </section><!--feature_news_section-->
@@ -82,13 +136,12 @@
                             <div class="item feature_news_item">
                                 <div class="item_wrapper">
                                     <div class="item_img">
-                                        <img class="img-responsive" src="{{url('image/'.$c->post_img)}}" alt="Chania">
+                                        <img class="img-responsive" style="height: 360px" src="{{url('image/'.$c->post_img)}}" alt="Chania">
                                     </div>
                                     <!--item_img-->
                                     <div class="item_title_date">
                                         <div class="news_item_title">
                                             <h2><a href="{{URL::to($c->c_name.'/'.$c->slug)}}">{{$c->post_title}}</a></h2>
-                                            {{-- <h2><a href="{{ route('singleview', ['category' => $c->c_name, 'slug' => $c->slug]) }}">{{ $c->post_title }}</a></h2> --}}
 
                                         </div>
                                         <!--news_item_title-->
@@ -143,7 +196,7 @@
                                             </a></h3>
 
 
-                                            <p>{{ substr(strip_tags($relatedPost->post_Description), 0, 50) . '...' }}</p>
+                                            <p>{{ substr(strip_tags($relatedPost->post_Description), 0, 50) . '.' }}</p>
 
                                     </div>
                                     <!--media-body-->
@@ -212,30 +265,29 @@
                         <!--tab-pane-->
 
                         <div class="tab-pane" id="2">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"><img class="media-object"
-                                            src="{{url('frontend/assets/img/img-list4.jpg')}}"
-                                            alt="Generic placeholder image"></a>
-                                </div>
-                                <!--media-left-->
-                                <div class="media-body">
-                                    <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                                    <span class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-full"></i>
-                                    </span>
-                                </div>
-                                <!--media-body-->
-                            </div>
-                            <!--media-->
+                            @php
+                            $popular=DB::table('posts') ->leftjoin('categories', 'posts.c_id', '=', 'categories.id')->where("c_status",1)->orderBy('posts.view','desc')->limit(5)->get();
+                        @endphp
+                            @foreach ($popular as $p )
+							<div class="media">
+								<div class="media-left">
+									<a href="#"><img class="media-object" src="{{'image/'.$p->post_img}}" width="80px" height="80px" alt="Generic placeholder image"></a>
+								</div><!--media-left-->
+								<div class="media-body">
+									<h3 class="media-heading"><a href="{{URL::to($p->c_name.'/'.$p->slug)}}">{{$p->post_title}}</a></h3>
+									<span class="rating">
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star-half-full"></i>
+									</span>
+								</div><!--media-body-->
+							</div><!--media-->
+                            @endforeach
 
 
-                        </div>
-                        <!--tab-pane-->
+						</div><!--tab-pane-->
                     </div>
                     <!--tab-content-->
                 </div>

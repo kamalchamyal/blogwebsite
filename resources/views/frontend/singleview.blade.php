@@ -1,7 +1,6 @@
 @extends('layouts.frontend')
-@section('title')
-
-    STYLESPIRE || {{ $post->c_name }} || {{ $post->post_title }}
+@section('mytitle')
+ {{ $post->c_name }} || {{ $post->post_title }}
 
 
 
@@ -16,7 +15,7 @@
 <section id="feature_category_section" class="feature_category_section single-page section_wrapper">
 	<div class="container">
         <ol class="breadcrumb" style="padding: 0; background-color:#f2f1f1;">
-            <li><a href="/">Home</a></li>
+            <li><a href="{{route('show')}}">Home</a></li>
             <li class="active" style="color:#ea5f00 ">{{$post->c_name}}</li>
             <li><a href="{{URL::to($post->c_name.'/'.$post->slug)}}">{{$post->post_title}}</a></li>
 
@@ -26,7 +25,7 @@
 				<div class="single_content_layout">
 					<div class="item feature_news_item">
 						<div class="item_img">
-							<img  class="img-responsive" src="{{'../image/'.$post->post_img}}" alt="Chania">
+							<img  class="img-responsive" style="width: 100%;" src="{{'../image/'.$post->post_img}}" alt="Chania">
 						</div><!--item_img-->
 							<div class="item_wrapper">
 								<div class="news_item_title">
@@ -325,12 +324,16 @@
 						</div><!--tab-pane-->
 
 						<div class="tab-pane" id="2">
+                            @php
+                            $popular=DB::table('posts') ->leftjoin('categories', 'posts.c_id', '=', 'categories.id')->where("c_status",1)->orderBy('posts.view','desc')->limit(5)->get();
+                        @endphp
+                            @foreach ($popular as $p )
 							<div class="media">
 								<div class="media-left">
-									<a href="#"><img class="media-object" src="assets/img/img-list4.jpg" alt="Generic placeholder image"></a>
+									<a href="#"><img class="media-object" src="{{'../image/'.$p->post_img}}" width="80px" height="80px" alt="Generic placeholder image"></a>
 								</div><!--media-left-->
 								<div class="media-body">
-									<h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
+									<h3 class="media-heading"><a href="{{URL::to($p->c_name.'/'.$p->slug)}}">{{$p->post_title}}</a></h3>
 									<span class="rating">
 										<i class="fa fa-star"></i>
 										<i class="fa fa-star"></i>
@@ -340,22 +343,9 @@
 									</span>
 								</div><!--media-body-->
 							</div><!--media-->
+                            @endforeach
 
-							<div class="media">
-								<div class="media-left">
-									<a href="#"><img class="media-object" src="assets/img/img-list.jpg" alt="Generic placeholder image"></a>
-								</div><!--media-left-->
-								<div class="media-body">
-									<h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-									<span class="rating">
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star-half-full"></i>
-									</span>
-								</div><!--media-body-->
-							</div><!--media-->
+
 						</div><!--tab-pane-->
 					</div><!--tab-content-->
 				</div><!--tab-->

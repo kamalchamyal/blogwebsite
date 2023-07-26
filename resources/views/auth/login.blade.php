@@ -1,9 +1,29 @@
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<style>
+     .btn-grad {
+            background-image: linear-gradient(to right, #FF8008 0%, #FFC837  51%, #FF8008  100%);
+            margin: 10px;
+            padding: 9px 37px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            box-shadow: 0 0 20px #eee;
+            border-radius: 10px;
+            display: block;
+          }
+
+          .btn-grad:hover {
+            background-position: right center; /* change the direction of the change here */
+            color: #fff;
+            text-decoration: none;
+          }
+    </style>
 @yield('extras-css')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+
+        <div class="col-md-6 mx-auto mt-5 card">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
                 <div class="card-body">
@@ -52,9 +72,12 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class=" btn-grad">
                                     {{ __('Login') }}
                                 </button>
+
+
+
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -67,7 +90,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+
 @endsection
 @yield('content')

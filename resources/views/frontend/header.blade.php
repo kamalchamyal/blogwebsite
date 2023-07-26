@@ -72,32 +72,20 @@
 
                 ->get();@endphp --}}
                     @foreach ($category as  $c)
-
-
-
-
                 <li><a class="page-scroll" href="{{URL::to($c->c_slug)}}">{{$c->c_name}}</a></li>
-                {{-- <li><a class="page-scroll" href="category.html">Football</a></li>
-                <li><a class="page-scroll" href="category.html">Hockey</a></li>
-                <li><a class="page-scroll" href="category.html">Basketball</a></li>
-                <li><a class="page-scroll" href="category.html">Boxing</a></li>
-                <li><a class="page-scroll" href="category.html">Golf</a></li>
-                <li><a class="page-scroll" href="category.html">Tennis</a></li>
-                <li><a class="page-scroll" href="category.html">Horse racing</a></li>
-                <li><a class="page-scroll" href="category.html">Track & Field</a></li> --}}
                 @endforeach
 
-                <li class="dropdown">
+                {{-- <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
             <div class="pull-right">
-                <form class="navbar-form" role="search">
+                <form class="navbar-form" method="GET" action="{{url('search')}}" role="search">
                     <div class="input-group">
                         <input class="form-control" placeholder="Search" name="q" type="text">
                         <div class="input-group-btn">

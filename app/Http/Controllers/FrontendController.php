@@ -54,15 +54,17 @@ class FrontendController extends Controller
     }
 
     public function singleview($category, $slug)
-
-    {
-
-        $post = DB::table('posts')
-        ->select('categories.id', 'categories.c_name','c_status','posts.id', 'posts.c_id', 'posts.post_img','posts.slug','posts.post_Description', 'posts.post_title', 'posts.created_at', 'users.name')
+{
+    $post = DB::table('posts')
+        ->select('categories.id', 'categories.c_name','c_status','posts.view','posts.id', 'posts.c_id', 'posts.post_img','posts.slug','posts.post_Description', 'posts.post_title', 'posts.created_at', 'users.name')
         ->leftJoin("users", "users.id", "=", "posts.added_by")
         ->leftJoin("categories", "categories.id", "=", "posts.c_id")
         ->where('slug', $slug)
         ->first();
+
+      DB::table('posts')
+        ->where('slug', $slug)
+        ->increment('view');
         if (!$post) {
             abort(404); // Redirect to error page with 404 status code
         }
@@ -83,6 +85,10 @@ class FrontendController extends Controller
         ->whereNull('parent_id')
         ->with('replies')
         ->get();
+
+    $comments->load('replies'); // Load the replies for each comment separately
+
+
 
 
 
@@ -107,10 +113,17 @@ class FrontendController extends Controller
 
         $latestpost= DB::table('posts')->leftjoin("users","users.id", "=","posts.added_by")->leftJoin("categories","categories.id"  , "=", "posts.c_id")
       ->where('c_slug',$c_slug)->where("c_status",1)->get();
-// dd($latestpost);
-if ($latestpost->isEmpty()) {
-    abort(404);
-}
+      $mostCommentedPost = Post::leftJoin('comments', 'posts.id', '=', 'comments.post_id')
+      ->leftJoin('categories', 'categories.id', '=', 'posts.c_id')
+      ->whereNull('comments.parent_id')
+      ->select('categories.id', 'categories.c_name', 'categories.c_status', 'posts.id', 'posts.post_title','posts.slug', 'posts.post_img', DB::raw('COUNT(comments.id) as comment_count'))
+      ->groupBy('categories.id', 'categories.c_name', 'categories.c_status','posts.slug', 'posts.id', 'posts.post_title', 'posts.post_img')
+      ->where("c_status",1) ->orderBy('comment_count', 'desc')
+      ->orderBy('posts.created_at', 'desc')
+      ->take(5)
+      ->get();
+
+
          $category = Category::where("c_status",1)->orderBy('id', 'DESC')->get();
          if (!$category ) {
             abort(404);
@@ -118,8 +131,33 @@ if ($latestpost->isEmpty()) {
 
         $currentTimestamp = time();
         $currentDateTime = date('d F. l Y. g:i A', $currentTimestamp);
-        return view('frontend.postdetail',['currentDateTime'=>$currentDateTime,   'category'=> $category, 'latestpost'=>$latestpost ,]);
+        if ($latestpost->isEmpty()) {
+            abort(404);
+        }
+        return view('frontend.postdetail',['mostCommentedPost'=>$mostCommentedPost,'currentDateTime'=>$currentDateTime,   'category'=> $category, 'latestpost'=>$latestpost ,]);
     }
+
+    public function search()
+    {
+        $searchTerm = request('search_term');
+
+        $category = Category::where("c_status", 1)->orderBy('id', 'DESC')->get();
+
+        $currentTimestamp = time();
+        $currentDateTime = date('d F. l Y. g:i A', $currentTimestamp);
+
+        $posts = Post::leftJoin('categories', 'categories.id', '=', 'posts.c_id')->where('post_title', 'like', '%' . $searchTerm . '%')
+            ->orWhere('post_Description', 'like', '%' . $searchTerm . '%')
+            ->orderBy('posts.created_at', 'desc')
+            ->get();
+
+        return view('frontend.search', [
+            'currentDateTime' => $currentDateTime,
+            'category' => $category,
+            'posts' => $posts,
+        ]);
+    }
+
 }
 
 

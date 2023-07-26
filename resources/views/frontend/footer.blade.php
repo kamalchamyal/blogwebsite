@@ -18,20 +18,14 @@
 						<div class="row">
 							<div class="col-sm-4">
 								<ul class="nav navbar-nav ">
-									<li><a href="../navbar/">Baseball</a></li>
-									<li><a href="../navbar-static-top/">Football</a></li>
-									<li><a href="./">Cricket</a></li>
-									<li><a href="../navbar/">Rugbi</a></li>
-									<li><a href="../navbar/">Hockey</a></li>
-									<li><a href="../navbar-static-top/">Boxing</a></li>
-									<li><a href="./">Golf</a></li>
-									<li><a href="../navbar/">Tennis</a></li>
-									<li><a href="../navbar/">Horse Racing</a></li>
+                                    @foreach ($category as $c)
+									<li><a href="{{URL::to($c->c_slug)}}">{{$c->c_name}}</a></li>
+                                    @endforeach
 								</ul>
 						    </div><!--col-sm-4-->
 					        <div class="col-sm-4 ">
 								<ul class="nav navbar-nav  ">
-									<li><a href="../navbar/">Track & Field</a></li>
+									<li><a href="{{route('Contactus')}}">Contact Us</a></li>
 									<li><a href="../navbar-static-top/">MembershipContact us</a></li>
 									<li><a href="./">Newsletter Alerts</a></li>
 									<li><a href="../navbar/">Podcast</a></li>

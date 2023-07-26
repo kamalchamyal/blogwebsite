@@ -1,83 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+@extends('layouts.frontend')
+@section('content')
+<style>
+.container-fluid .text-center h1,
+.container-fluid .text-center a {
+    animation: fadeIn 2s ease-in-out forwards;
+}
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
+    </style>
 
-    <title>404</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="{{url('backend/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="{{url('backend/css/sb-admin-2.min.css')}}" rel="stylesheet">
-
-</head>
-
-<body id="page-top">
-
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-
-
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- 404 Error Text -->
-                    <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                        <a href="{{route('show')}}">&larr; Back to Dashboard</a>
-                    </div>
-
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-
-
-        </div>
-        <!-- End of Content Wrapper -->
-
+<div class="container-fluid" style="margin-top: 5px; margin-bottom: 5px;">
+    <div class="text-center">
+        <h1 class="text-primary" style="font-size: 102px; color: #ff6102; opacity: 0;">404</h1>
+        <h2>Page Not Found</h2>
+        <p class="lead">It looks like you found a glitch in the matrix...</p>
+        <a href="{{ route('show') }}" class="btn btn-primary btn-lg" style="background-color: #151616; opacity: 0;">&larr; Back to Dashboard</a>
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+</div>
 
 
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-</body>
-
-</html>
+           @endsection

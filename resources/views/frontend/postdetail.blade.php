@@ -1,5 +1,12 @@
 @extends('layouts.frontend')
+@section('mytitle')
+ {{ $latestpost[0]->c_name }} ||
 
+
+
+
+
+@endsection
 @section('content')
 	<!-- Feature Category Section & sidebar -->
 	<section id="feature_category_section" class="feature_category_section category_page section_wrapper">
@@ -52,7 +59,7 @@
                                         </div> <!--item_img-->
                                         <div class="item_title_date">
                                             <div class="news_item_title">
-                                                <h2><a href="single.html">{{$post->post_title}}</a></h2>
+                                                <h2><a href="{{URL::to($post->c_name.'/'.$post->slug)}}">{{$post->post_title}}</a></h2>
                                             </div>
                                             <?php
                                             $dateString = $latestpost[0]->created_at;
@@ -102,7 +109,7 @@
                                         <a href="#"><img class="media-object" src="{{'./image/'.$newallpost->post_img}}" width="80px " height="80px" alt="Generic placeholder image"></a>
                                     </div><!--media-left-->
                                     <div class="media-body">
-                                        <h4 class="media-heading"><a href="#">{{$newallpost->post_title}}</a></h4>
+                                        <h4 class="media-heading"><a href="{{URL::to($newallpost->c_name.'/'.$newallpost->slug)}}">{{$newallpost->post_title}}</a></h4>
                                         <span class="rating">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -118,12 +125,16 @@
                             </div><!--tab-pane-->
 
                             <div class="tab-pane" id="2">
+                                @php
+                                $popular=DB::table('posts') ->leftjoin('categories', 'posts.c_id', '=', 'categories.id')->where("c_status",1)->orderBy('posts.view','desc')->limit(5)->get();
+                            @endphp
+                                @foreach ($popular as $p )
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="#"><img class="media-object" src="assets/img/img-list4.jpg" alt="Generic placeholder image"></a>
+                                        <a href="#"><img class="media-object" src="{{'./image/'.$p->post_img}}" width="80px" height="80px" alt="Generic placeholder image"></a>
                                     </div><!--media-left-->
                                     <div class="media-body">
-                                        <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
+                                        <h3 class="media-heading"><a href="{{URL::to($p->c_name.'/'.$p->slug)}}">{{$p->post_title}}</a></h3>
                                         <span class="rating">
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
@@ -133,27 +144,14 @@
                                         </span>
                                     </div><!--media-body-->
                                 </div><!--media-->
+                                @endforeach
 
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#"><img class="media-object" src="assets/img/img-list.jpg" alt="Generic placeholder image"></a>
-                                    </div><!--media-left-->
-                                    <div class="media-body">
-                                        <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                                        <span class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-half-full"></i>
-                                        </span>
-                                    </div><!--media-body-->
-                                </div><!--media-->
+
                             </div><!--tab-pane-->
                         </div><!--tab-content-->
                     </div><!--tab-->
 
-                    <div class="ad">
+                    {{-- <div class="ad">
                         <img class="img-responsive" src="assets/img/img-sitebar.jpg" alt="img" />
                         <img class="img-responsive" src="assets/img/img-sitebar.jpg" alt="img" />
                         <img class="img-responsive" src="assets/img/img-sitebar.jpg" alt="img" />
@@ -166,61 +164,39 @@
 
                     <div class="ad">
                         <img class="img-responsive" src="assets/img/img-ad2.jpg" alt="img" />
-                    </div>
+                    </div> --}}
 
                     <div class="most_comment">
                         <div class="sidebar_title">
                             <h2>Most Commented</h2>
                         </div>
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#"><img class="media-object" src="assets/img/img-list.jpg" alt="Generic placeholder image"></a>
-                            </div><!--media-left-->
-                            <div class="media-body">
-                                <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                                <div class="comment_box">
-                                    <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                    <div class="comments"><a href="#">9 Comments</a></div>
-                                </div><!--comment_box-->
-                            </div><!--media-body-->
-                        </div><!--media-->
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#"><img class="media-object" src="assets/img/img-list2.jpg" alt="Generic placeholder image"></a>
-                            </div><!--media-left-->
-                            <div class="media-body">
-                                <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                                <div class="comment_box">
-                                    <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                    <div class="comments"><a href="#">20 Comments</a></div>
-                                </div><!--comment_box-->
-                            </div><!--media-body-->
-                        </div><!--media-->
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#"><img class="media-object" src="assets/img/img-list3.jpg" alt="Generic placeholder image"></a>
-                            </div><!--media-left-->
-                            <div class="media-body">
-                                <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                                <div class="comment_box">
-                                    <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                    <div class="comments"><a href="#">23 Comments</a></div>
-                                </div><!--comment_box-->
-                            </div><!--media-body-->
-                        </div><!--media-->
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="#"><img class="media-object" src="assets/img/img-list3.jpg" alt="Generic placeholder image"></a>
-                            </div><!--media-left-->
-                            <div class="media-body">
-                                <h3 class="media-heading"><a href="#">Spain going to made class football</a></h3>
-                                <div class="comment_box">
-                                    <div class="comments_icon"> <i class="fa fa-comments" aria-hidden="true"></i></div>
-                                    <div class="comments"><a href="#">44 Comments</a></div>
-                                </div><!--comment_box-->
-                            </div><!--media-body-->
-                        </div><!--media-->
-                    </div><!--most_comment-->
+                        @if ($mostCommentedPost)
+                        @foreach ($mostCommentedPost as $mostCommentedPost )
+
+
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#"><img class="media-object" src="{{ './image/' . $mostCommentedPost->post_img }}"
+                                            alt="Generic placeholder image" height="80px " width="80px"></a>
+                                </div>
+                                <!--media-left-->
+                                <div class="media-body">
+                                    <h3 class="media-heading"><a href="{{URL::to($mostCommentedPost->c_name.'/'.$mostCommentedPost->slug)}}">{{ $mostCommentedPost->post_title }}</a></h3>
+                                    <div class="comment_box">
+                                        <div class="comments_icon">
+                                            <i class="fa fa-comments" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="comments"><a href="{{URL::to($mostCommentedPost->c_name.'/'.$mostCommentedPost->slug)}}">{{ $mostCommentedPost->comment_count }} Comments</a></div>
+                                    </div>
+                                    <!--comment_box-->
+                                </div>
+                                <!--media-body-->
+                            </div>
+                            @endforeach
+                        @else
+                            <p>No posts found.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
     </section><!--feature_category_section-->

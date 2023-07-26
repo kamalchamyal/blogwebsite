@@ -16,7 +16,8 @@ class Post extends Model
         'post_Description',
         'slug',
         'post_img',
-        'banner_img'
+        'banner_img',
+        'view'
     ];
     // public function category(){
     //     return $this->belongsTo(Category::class, 'c_name');

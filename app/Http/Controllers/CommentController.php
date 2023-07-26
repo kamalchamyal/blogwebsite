@@ -51,11 +51,19 @@ class CommentController extends Controller
     public function index()
     {
         $replies = Comment::leftJoin("posts", "comments.post_id", "=", "posts.id")
+            ->select('comments.*', 'posts.post_title')
+            ->whereNotNull('parent_id')
+            ->with('replies')
+            ->get();
 
-        ->select('comments.*', 'posts.post_title') ->whereNotNull('parent_id')->with('replies')->get();
-        return response()->json($replies);
+        // Get the parent ID for each reply
+        $repliesWithParentId = $replies->map(function ($reply) {
+            $reply['parent_id'] = $reply->parent_id;
+            return $reply;
+        });
+
+        return response()->json($repliesWithParentId);
     }
-
 
 public function show()
 {
@@ -106,15 +114,23 @@ public function delete($id)
     // Redirect or return a response as needed
     return redirect()->back()->with('success', 'Comment and replies deleted successfully.');
 }
-public function deletes($id)
+// public function deletes($id)
+// {
+
+//     $reply = Comment::findOrFail($id);
+
+//     $reply->delete();
+
+
+//     return redirect()->back()->with('success', 'Comment and replies deleted successfully.');
+// }
+public function deleteSelectedReplies(Request $request)
 {
+    $replyIds = $request->input('replyIds');
 
-    $reply = Comment::findOrFail($id);
+    Comment::whereIn('id', $replyIds)->delete();
 
-    $reply->delete();
-
-
-    return redirect()->back()->with('success', 'Comment and replies deleted successfully.');
+    return response()->json(['success' => true]);
 }
 
 }
